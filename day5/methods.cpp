@@ -5,10 +5,12 @@ using namespace std;
 
 class myClass{
     public:
-    void fun(){
-        cout<<"method caleed";
-    }
+    void fun();
 };
+
+myClass::fun(){
+    cout<<"helo";
+}
 
 int fun2(){
     cout<<"functin called";
