@@ -1,0 +1,118 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+// Structure to hold ticket information
+struct Ticket {
+    int id;
+    string eventName;
+    string date;
+    int totalTickets;
+    int bookedTickets;
+
+    Ticket(int id, string name, string date, int total)
+        : id(id), eventName(name), date(date), totalTickets(total), bookedTickets(0) {}
+
+    // Function to display ticket details
+    void display() const {
+        cout << "Ticket ID: " << id << endl;
+        cout << "Event Name: " << eventName << endl;
+        cout << "Date: " << date << endl;
+        cout << "Total Tickets: " << totalTickets << endl;
+        cout << "Booked Tickets: " << bookedTickets << endl;
+        cout << "Available Tickets: " << (totalTickets - bookedTickets) << endl;
+        cout << "------------------------" << endl;
+    }
+};
+
+// Class for the Ticket Reservation System
+class TicketReservationSystem {
+private:
+    vector<Ticket> tickets; // List of available tickets
+
+public:
+    // Constructor to initialize some tickets
+    TicketReservationSystem() {
+        tickets.emplace_back(1, "Concert A", "2024-10-30", 100);
+        tickets.emplace_back(2, "Concert B", "2024-11-05", 150);
+        tickets.emplace_back(3, "Movie X", "2024-12-01", 200);
+    }
+
+    // Function to display all tickets
+    void displayTickets() const {
+        cout << "Available Tickets:" << endl;
+        for (const auto& ticket : tickets) {
+            ticket.display();
+        }
+    }
+
+    // Function to book tickets
+    void bookTickets(int ticketId, int numTickets) {
+        for (auto& ticket : tickets) {
+            if (ticket.id == ticketId) {
+                if (ticket.bookedTickets + numTickets <= ticket.totalTickets) {
+                    ticket.bookedTickets += numTickets;
+                    cout << "Successfully booked " << numTickets << " tickets for " << ticket.eventName << "!" << endl;
+                } else {
+                    cout << "Not enough available tickets." << endl;
+                }
+                return;
+            }
+        }
+        cout << "Ticket ID not found." << endl;
+    }
+
+    // Function to display booking details
+    void displayBookingDetails(int ticketId) const {
+        for (const auto& ticket : tickets) {
+            if (ticket.id == ticketId) {
+                cout << "Booking Details for Ticket ID " << ticketId << ":" << endl;
+                ticket.display();
+                return;
+            }
+        }
+        cout << "Ticket ID not found." << endl;
+    }
+};
+
+int main() {
+    TicketReservationSystem system; // Create the ticket reservation system
+    int choice, ticketId, numTickets;
+
+    while (true) {
+        cout << "Ticket Reservation System" << endl;
+        cout << "1. View Available Tickets" << endl;
+        cout << "2. Book Tickets" << endl;
+        cout << "3. View Booking Details" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                system.displayTickets(); // Display available tickets
+                break;
+            case 2:
+                cout << "Enter Ticket ID to book: ";
+                cin >> ticketId;
+                cout << "Enter number of tickets to book: ";
+                cin >> numTickets;
+                system.bookTickets(ticketId, numTickets); // Book tickets
+                break;
+            case 3:
+                cout << "Enter Ticket ID to view booking details: ";
+                cin >> ticketId;
+                system.displayBookingDetails(ticketId); // Show booking details
+                break;
+            case 4:
+                cout << "Exiting the system." << endl;
+                return 0; // Exit the program
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+        cout << endl; // Newline for better readability
+    }
+}
+
